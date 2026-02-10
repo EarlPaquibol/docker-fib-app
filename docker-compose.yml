@@ -1,0 +1,43 @@
+version: "3"
+services:
+  client:
+    restart: unless-stopped
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./client
+    volumes:
+      - ./client.:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+  redis:
+    image: "redis:latest"
+    environment:
+      - REDIS_PASSWORD=EXAMPLE
+  postgres:
+    image: "postgres:latest"
+    environment:
+      - POSTGRES_PASSWORD=postgres_password
+  server:
+    depends_on:
+      - redis
+      - postgres
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./server
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+    restart: unless-stopped
+  worker:
+    depends_on:
+      - redis
+      - postgres
+    build:
+      context: ./worker
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./worker:/app
+      - /app/node_modules
