@@ -1,0 +1,30 @@
+name: Deploy project
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v4
+      - name: Build dev frontend
+        run: docker build -t earl/frontend-dev-test -f ./client/Dockerfile.dev ./client
+      - name: Test dev frontend
+        run: docker run --rm -e CI=true earl/frontend-dev-test npm run test
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v4
+      - name: Build frontend
+        run: docker build -t earl/multi-client ./client
+      - name: Build nginx
+        run: docker build -t earl/multi-nginx ./nginx
+      - name: Build server
+        run: docker build -t earl/multi-server ./server
+      - name: Build worker
+        run: docker build -t earl/multi-worker ./worker
