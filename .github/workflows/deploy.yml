@@ -28,3 +28,7 @@ jobs:
         run: docker build -t earl/multi-server ./server
       - name: Build worker
         run: docker build -t earl/multi-worker ./worker
+      #Next steps:
+      #upload build images to AWS/Docker hub
+      #Push project to EB ???
+      #AWS pulls from ECR/Docker hub then deploys
