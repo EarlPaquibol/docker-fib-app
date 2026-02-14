@@ -27,20 +27,21 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
+      - run: SHORT_SHA=${GITHUB_SHA::7}
       - name: Build frontend
-        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/multi-client:${{ github.sha::7 }} ./client
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/multi-client:$SHORT_SHA ./client
       - name: Build nginx
-        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/multi-nginx:${{ github.sha::7 }} ./nginx
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/multi-nginx:$SHORT_SHA ./nginx
       - name: Build server
-        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/multi-server:${{ github.sha::7 }} ./server
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/multi-server:$SHORT_SHA ./server
       - name: Build worker
-        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/multi-worker:${{ github.sha::7 }} ./worker
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/multi-worker:$SHORT_SHA ./worker
       - name: Docker push images
         run: |
-          docker push ${{ secrets.DOCKER_USERNAME }}/multi-client:${{ github.sha::7 }}
-          docker push ${{ secrets.DOCKER_USERNAME }}/multi-nginx:${{ github.sha::7 }}
-          docker push ${{ secrets.DOCKER_USERNAME }}/multi-server:${{ github.sha::7 }}
-          docker push ${{ secrets.DOCKER_USERNAME }}/multi-worker:${{ github.sha::7 }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/multi-client:$SHORT_SHA
+          docker push ${{ secrets.DOCKER_USERNAME }}/multi-nginx:$SHORT_SHA
+          docker push ${{ secrets.DOCKER_USERNAME }}/multi-server:$SHORT_SHA
+          docker push ${{ secrets.DOCKER_USERNAME }}/multi-worker:$SHORT_SHA
   #NEXT STEPS
   #Push project to EB ???
   #AWS pulls from ECR/Docker hub then deploys
