@@ -39,10 +39,18 @@ jobs:
         run: docker build -t ${{ secrets.DOCKER_USERNAME }}/multi-worker:$SHORT_SHA ./worker
       - name: Docker push images
         run: |
+          docker tag ${{ secrets.DOCKER_USERNAME }}/multi-client:$SHORT_SHA ${{ secrets.DOCKER_USERNAME }}/multi-client:latest
+          docker tag ${{ secrets.DOCKER_USERNAME }}/multi-nginx:$SHORT_SHA ${{ secrets.DOCKER_USERNAME }}/multi-nginx:latest
+          docker tag ${{ secrets.DOCKER_USERNAME }}/multi-server:$SHORT_SHA ${{ secrets.DOCKER_USERNAME }}/multi-server:latest
+          docker tag ${{ secrets.DOCKER_USERNAME }}/multi-worker:$SHORT_SHA ${{ secrets.DOCKER_USERNAME }}/multi-worker:latest
           docker push ${{ secrets.DOCKER_USERNAME }}/multi-client:$SHORT_SHA
           docker push ${{ secrets.DOCKER_USERNAME }}/multi-nginx:$SHORT_SHA
           docker push ${{ secrets.DOCKER_USERNAME }}/multi-server:$SHORT_SHA
           docker push ${{ secrets.DOCKER_USERNAME }}/multi-worker:$SHORT_SHA
+          docker push ${{ secrets.DOCKER_USERNAME }}/multi-client:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/multi-nginx:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/multi-server:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/multi-worker:latest
   #NEXT STEPS
   #Push project to EB ???
   #AWS pulls from ECR/Docker hub then deploys
