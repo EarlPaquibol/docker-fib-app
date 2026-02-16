@@ -68,6 +68,3 @@ jobs:
         run: pip install awsebcli
       - name: Deploy app
         run: eb deploy Multi-docker-env
-  #NEXT STEPS
-  #Push project to EB ???
-  #AWS pulls from ECR/Docker hub then deploys
