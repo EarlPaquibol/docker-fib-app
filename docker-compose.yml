@@ -4,10 +4,12 @@ services:
     image: earlp3/multi-client
     mem_limit: 128m
     hostname: client
+    # platform: linux/amd64
   express:
     image: earlp3/multi-server
     mem_limit: 128m
     hostname: express
+    # platform: linux/amd64
     environment:
       - REDIS_HOST=$REDIS_HOST
       - REDIS_PORT=$REDIS_PORT
@@ -20,6 +22,7 @@ services:
     image: earlp3/multi-worker
     mem_limit: 128m
     hostname: worker
+    # platform: linux/amd64
     environment:
       - REDIS_HOST=$REDIS_HOST
       - REDIS_PORT=$REDIS_PORT
@@ -27,5 +30,6 @@ services:
     image: earlp3/multi-nginx
     mem_limit: 128m
     hostname: nginx
+    # platform: linux/amd64
     ports:
       - "80:80"
